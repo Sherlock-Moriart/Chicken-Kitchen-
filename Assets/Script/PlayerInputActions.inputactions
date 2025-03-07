@@ -1,0 +1,164 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "d9d68d2e-f9fc-446e-a814-e61085ae5401",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "9db1d082-5e99-4c5b-b614-7fb3705e1292",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "3e9b141c-481e-4727-a933-bdf24b1f8dc8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "464f7842-9c40-4b7f-84d8-8c5f2f5e6894",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "60125af4-005e-4c3d-8cb5-e830390025fe",
+                    "path": "<Keyboard>/#(W)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "2a1c3fab-f4bd-498c-9399-ceb373642233",
+                    "path": "<Keyboard>/#(S)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "3e4cb7db-9f9e-4075-98a9-ca5d116b938d",
+                    "path": "<Keyboard>/#(A)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "6400f941-5608-4b0b-8646-b289a8b2c253",
+                    "path": "<Keyboard>/#(D)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "3b00c071-a785-4bc7-9856-a53c02d5b0fe",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "83ac2c70-bd2a-471f-a666-bb3cb6df0f4e",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "4624cce5-3678-4961-87b1-8977b9582810",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "326e1a73-5254-4b75-83c3-0c134f7520ac",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "77cc7da5-19f6-41c9-a17b-7f4121dda5fa",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e6e205b5-10e4-4388-887c-79555eb4c8eb",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e9511d65-757b-4890-b828-9cb0f0511b33",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
