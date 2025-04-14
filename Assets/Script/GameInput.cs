@@ -5,8 +5,9 @@ using System;
 
 public class GameInput : MonoBehaviour
 {
-    // 定义交互事件（当按下E键时触发）
-    public event EventHandler OnInteractAction;
+    // 定义交互事件
+    public event EventHandler OnInteractAction; //E
+    public event EventHandler OnInteractAlternateAction;//F
 
     // Unity新输入系统的输入动作资源引用
     private PlayerInputActions playerInputActions;
@@ -20,7 +21,10 @@ public class GameInput : MonoBehaviour
 
         // 绑定交互动作（E键）的回调方法
         playerInputActions.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
     }
+
+  
 
     // 交互动作触发时的回调方法
     // context：输入系统提供的回调参数（包含输入详细信息）
@@ -28,6 +32,11 @@ public class GameInput : MonoBehaviour
     {
         // 触发所有订阅了OnInteractAction的事件监听器
         OnInteractAction?.Invoke(this, EventArgs.Empty);
+    }
+    private void InteractAlternate_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        // 触发所有订阅了OnInteractAction的事件监听器
+       OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
     }
 
     // 获取标准化后的移动输入向量（范围[-1,1]）

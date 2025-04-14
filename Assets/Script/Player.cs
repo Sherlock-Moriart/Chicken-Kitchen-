@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour,IKitchenObjectParent
 {
     // 单例模式：通过静态Instance属性让其他脚本访问玩家对象
     public static Player Instance { get; private set; }
@@ -17,22 +17,31 @@ public class Player : MonoBehaviour
     // 事件参数类：传递当前选中的柜台
     public class OnseletedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter; // 当前选中的柜台对象
+        public BaseCounter selectedCounter; // 当前选中的柜台对象
     }
 
     [SerializeField] private float moveSpeed = 7f;      // 玩家移动速度（单位/秒）
     [SerializeField] private GameInput gameInput;       // 输入系统引用（需在Inspector面板关联）
     [SerializeField] private LayerMask countersLayerMask; // 射线检测的层级过滤（勾选柜台所在层）
+    [SerializeField] private Transform KitchenObjectHoldPoint;//玩家把东西拿在手里的位置
 
     private bool isWalking;            // 是否处于移动状态
     private Vector3 lastInteractDir;   // 最后记录的交互方向（用于射线检测）
-    private ClearCounter selectedCounter; // 当前选中的柜台缓存
+    private BaseCounter selectedCounter; // 当前选中的柜台缓存
+    private KitchenObject kitchenObject; // 当前柜台持有的物品实例
+
+
+
 
     private void Start()
     {
         // 订阅输入系统的交互事件（当按下E键时触发）
         gameInput.OnInteractAction += GameInput_OnInteractAction;
+        // 订阅输入系统的交互事件（当按下F键时触发）
+        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
     }
+
+
 
     // 处理交互按键事件的回调方法
     // sender：事件发送者（GameInput对象）
@@ -45,7 +54,15 @@ public class Player : MonoBehaviour
         if (selectedCounter != null)
         {
             // 调用选中柜台的交互方法
-            selectedCounter.Interact();
+            selectedCounter.Interact(this);
+        }
+    }
+        private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            // 调用选中柜台的交互方法
+            selectedCounter.InteractAlternate(this);
         }
     }
 
@@ -98,17 +115,17 @@ public class Player : MonoBehaviour
             countersLayerMask))
         {
             // 尝试从碰撞物体获取ClearCounter组件
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
                 // 如果当前选中柜台与检测到的不同则更新
-                if (clearCounter != selectedCounter)
+                if (baseCounter != selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
                 else
                 {
                     // 相同柜台时也执行更新（可优化为不重复调用）
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else
@@ -124,7 +141,7 @@ public class Player : MonoBehaviour
         }
 
         // 调试输出当前碰撞物体名称
-        Debug.Log($"检测到物体：{raycastHit.transform?.gameObject.name ?? "null"}");
+        //Debug.Log($"检测到物体：{raycastHit.transform?.gameObject.name ?? "null"}");
     }
 
     // 处理玩家移动逻辑
@@ -155,7 +172,7 @@ public class Player : MonoBehaviour
         {
             // 尝试仅沿X轴移动
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = !Physics.CapsuleCast(
+            canMove = moveDir.x!=0&&!Physics.CapsuleCast(
                 transform.position,
                 transform.position + Vector3.up * playerHeight,
                 playerRadius,
@@ -170,7 +187,7 @@ public class Player : MonoBehaviour
             {
                 // 尝试仅沿Z轴移动
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-                canMove = !Physics.CapsuleCast(
+                canMove = moveDir.z!=0&&!Physics.CapsuleCast(
                     transform.position,
                     transform.position + Vector3.up * playerHeight,
                     playerRadius,
@@ -178,7 +195,7 @@ public class Player : MonoBehaviour
                     moveDistance);
 
                 if (canMove)
-                {
+                {   
                     moveDir = moveDirZ; // 仅允许Z轴移动
                 }
                 else
@@ -206,7 +223,7 @@ public class Player : MonoBehaviour
     }
 
     // 更新选中柜台并触发事件
-    private void SetSelectedCounter(ClearCounter selectedCounter)
+    private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         // 更新当前选中柜台
         this.selectedCounter = selectedCounter;
@@ -218,5 +235,30 @@ public class Player : MonoBehaviour
             {
                 selectedCounter = selectedCounter
             });
+    }
+
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return KitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+            this.kitchenObject = kitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+
+    public void ClearKitchenObject()
+    {
+       kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
     }
 }
